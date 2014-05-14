@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Featured YouTube Playlist
  * Description: Creates a display of embedded YouTube videos from the playlist given.
- * Version: 1.0
+ * Version: 1.1
  * Author: Michael Codner
  * Author URI: http://www.surgestuff.com
  */
@@ -93,9 +93,9 @@ function yfp_GetHtml(){
   $fplaylist2 = getYouTubePlayListIdFromURL(get_option('yfp_URL_2'));
   $EmbedHtml = '';
 
-  $fpcont = json_decode(wp_remote_get('http://gdata.youtube.com/feeds/api/playlists/' . $fplaylist . '/?v=2&alt=json&feature=plcp'));
-  $fpcont1 = json_decode(wp_remote_get('http://gdata.youtube.com/feeds/api/playlists/' . $fplaylist1 . '/?v=2&alt=json&feature=plcp'));
-  $fpcont2 = json_decode(wp_remote_get('http://gdata.youtube.com/feeds/api/playlists/' . $fplaylist2 . '/?v=2&alt=json&feature=plcp'));
+  $fpcont = json_decode(wp_remote_get('http://gdata.youtube.com/feeds/api/playlists/' . $fplaylist . '/?v=2&alt=json&feature=plcp')['body']);
+  $fpcont1 = json_decode(wp_remote_get('http://gdata.youtube.com/feeds/api/playlists/' . $fplaylist1 . '/?v=2&alt=json&feature=plcp')['body']);
+  $fpcont2 = json_decode(wp_remote_get('http://gdata.youtube.com/feeds/api/playlists/' . $fplaylist2 . '/?v=2&alt=json&feature=plcp')['body']);
   
   $fpfeed = $fpcont->feed->entry;
   $fpfeed1 = $fpcont1->feed->entry;
@@ -143,23 +143,7 @@ function yfp_GetHtml(){
 	  }
 	  $i++;
     }
-  }
-  // $EmbedHtml .= '
-  // <script>
-    // var playListURL = \'http://gdata.youtube.com/feeds/api/playlists/'. $fplaylist . '?v=2&alt=json&callback=?\';
-    // var playList1URL = \'http://gdata.youtube.com/feeds/api/playlists/'. $fplaylist1 . '?v=2&alt=json&callback=?\';
-    // var playList2URL = \'http://gdata.youtube.com/feeds/api/playlists/'. $fplaylist2 . '?v=2&alt=json&callback=?\';
-    // var videoURL= \'http://www.youtube.com/watch?v=\';
-    // $.getJSON(playListURL, function(data) {
-      // $.each(data.feed.entry, function(i, item) {
-        // var feedTitle = item.title.$t;
-        // var fragments = feedURL.split("/");
-        // var videoID = fragments[fragments.length - 2];
-      // });
-    // });
-  // </script>
-  // ';
-  
+  }  
   
   $EmbedHtml .= '
   <!-- Nav tabs -->
@@ -294,5 +278,7 @@ function yfp_GetHtml(){
 
   return $EmbedHtml;
 }
+
+add_shortcode( 'featuredVideos', array( $this, 'yfp_GetHtml' );
 
 ?>
