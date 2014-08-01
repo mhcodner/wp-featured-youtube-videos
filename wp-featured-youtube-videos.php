@@ -8,6 +8,8 @@
  */
 ?>
 <?php
+
+add_shortcode( 'featuredVideos', 'yfp_GetHtml' );
   
 function getYouTubeIdFromURL($url)
 {
@@ -278,7 +280,5 @@ function yfp_GetHtml(){
 
   return $EmbedHtml;
 }
-
-add_shortcode( 'featuredVideos', array( $this, 'yfp_GetHtml' );
 
 ?>
